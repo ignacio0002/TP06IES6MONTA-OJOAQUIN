@@ -3,9 +3,9 @@ package ar.edu.ies6.MontanoJoaquin.controller;
 import ar.edu.ies6.MontanoJoaquin.model.Alumno;
 import ar.edu.ies6.MontanoJoaquin.util.ListadoAlumnos;
 
-import java.time.LocalDate;
+//import java.time.LocalDate;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 //import java.util.List;
 
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,9 +26,6 @@ public class AlumnoController {
 		
 		Alumno alu = new Alumno();
 		
-		alu.setFechaNac(LocalDate.parse("1990-10-27"));
-		System.out.println("Edad: "+alu.getEdad());
-
 		ModelAndView modelView = new ModelAndView("index");
 
 		modelView.addObject("alumno", alu);
@@ -46,5 +44,30 @@ public class AlumnoController {
 		
 		return modelView;
 	}
+	
+	//metodo para eliminar un registro
+	
+	@GetMapping("/eliminarAlumno/{dni}")
+	public ModelAndView eliminarAlumno(@PathVariable Integer dni){
+		
+		for(int i=0;i <ListadoAlumnos.getListado().size();i++) {
+			if(ListadoAlumnos.getListado().get(i).getDni().equals(dni)) {
+				//ListadoAlumnos.getListado().get(i).setEstado(false);
+				ListadoAlumnos.getListado().remove(i);
+			}
+		}
+		
+		
+		
+		ModelAndView modelView = new ModelAndView("listadoAlumnos");
+		
+		modelView.addObject("listado", ListadoAlumnos.getListado());
+		
+		return modelView;
+	
+	}
+	
+	//metodo para modificar un registro
+	
 	
 }

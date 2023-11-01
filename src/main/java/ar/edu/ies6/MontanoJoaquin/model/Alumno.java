@@ -17,7 +17,8 @@ public class Alumno {
 	private Integer addressNumber;
 	private String addressCity;
 	private LocalDate fechaNac;
-	private String dni;
+	private Integer dni;
+	//private interger dni;
 	private Boolean estado;
 	
 	public Alumno(){
@@ -52,10 +53,10 @@ public class Alumno {
 		this.fechaNac = fechaNac;
 		
 	}
-	public String getDni() {
+	public Integer getDni() {
 		return dni;
 	}
-	public void setDni(String dni) {
+	public void setDni(Integer dni) {
 		this.dni = dni;
 	}
 	public Boolean getEstado() {
