@@ -7,18 +7,39 @@ import java.time.Period;
 
 import org.springframework.stereotype.Component;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+
+@Entity
 @Component
 
 public class Alumno {
 
+	@Column
+	//@NotBlank @Size(min = 1, max = 30 )
 	private String name;
+	
+	@Column
 	private String lastName;
+	
+	@Column
 	private String addressStreet;
+	@Column
 	private Integer addressNumber;
+	
+	@Column
 	private String addressCity;
+	
+	@Column
 	private LocalDate fechaNac;
+	
+	@Id
+	//@GeneratedValue (strtegy = GenerationType.AUTO)
 	private Integer dni;
-	//private interger dni;
+	
+	@Column
 	private Boolean estado;
 	
 	public Alumno(){
