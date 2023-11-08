@@ -1,7 +1,10 @@
 package ar.edu.ies6.MontanoJoaquin.controller;
 
 import ar.edu.ies6.MontanoJoaquin.model.Alumno;
+import ar.edu.ies6.MontanoJoaquin.service.AlumnoService;
 import ar.edu.ies6.MontanoJoaquin.util.ListadoAlumnos;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 //import java.time.LocalDate;
 
@@ -21,6 +24,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class AlumnoController {
 	
+	@Autowired
+	Alumno alumno;
+	
+	@Autowired
+	AlumnoService alumnoService;
+	
 	@GetMapping({ "/index", "/", "/home", "/alumno" })
 	public ModelAndView cargarAlumno(){
 		
@@ -36,12 +45,15 @@ public class AlumnoController {
 	@PostMapping("/cargarAlumno")
 	public ModelAndView cargarAlumno(@ModelAttribute("alumno") Alumno alumno) {
 		
-		ListadoAlumnos.getListado().add(alumno);
+		//ListadoAlumnos.getListado().add(alumno);
 		
+		alumnoService.guardarAlumno(alumno);
+		//se guarda en la bd
 		ModelAndView modelView = new ModelAndView("listadoAlumnos");
 		
-		modelView.addObject("listado", ListadoAlumnos.getListado());
-		
+		//modelView.addObject("listado", ListadoAlumnos.getListado());
+		//buscar de la bd
+		modelView.addObject("listado", alumnoService.buscarTodosAlumnos());
 		return modelView;
 	}
 	
