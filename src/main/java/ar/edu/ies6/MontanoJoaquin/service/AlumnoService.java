@@ -24,21 +24,21 @@ public class AlumnoService {
 		
 	}
 	
-	public void eliminarAlumno(Integer dni) {
-		//eliminar un objeto por su identificador
+	public void eliminarAlumno(Integer dni) throws Exception {
+		//elimina un objeto por su identificador
+		//alumnoRepository.delete(alu);	
+			Alumno auxiliar = new Alumno();
+			auxiliar = encontrarUnAlumno(dni);
+			auxiliar.setEstado(false);
+			alumnoRepository.save(auxiliar);
 		
-		
-	}
+		}
 	
 	public List<Alumno> buscarTodosAlumnos() {
-		
 		//algoritmo para buscar alumnos
-		
 		//List<Alumno> listado = new ArrayList<> ();
-		
 		//return listado;
-		//castear alumnorepository
-		return (List<Alumno>) alumnoRepository.findAll();
+		return (List<Alumno>) alumnoRepository.findByEstado(true);
 	}
 	
 	public void modificarAlumno(Alumno alumno) {
@@ -46,5 +46,12 @@ public class AlumnoService {
 		
 	}
 	
+	public Alumno encontrarUnAlumno(Integer dni) throws Exception {
+		return alumnoRepository.findById(dni).orElseThrow(() -> new Exception("Alumno no encontrado"));
+	}
+	
+	public boolean existeDni(Integer dni) {
+	    return alumnoRepository.existsById(dni);
+	}
 	//Todos los Servicios
 }

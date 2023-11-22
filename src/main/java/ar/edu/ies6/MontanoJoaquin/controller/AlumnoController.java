@@ -2,7 +2,7 @@ package ar.edu.ies6.MontanoJoaquin.controller;
 
 import ar.edu.ies6.MontanoJoaquin.model.Alumno;
 import ar.edu.ies6.MontanoJoaquin.service.AlumnoService;
-import ar.edu.ies6.MontanoJoaquin.util.ListadoAlumnos;
+//import ar.edu.ies6.MontanoJoaquin.util.ListadoAlumnos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,7 +30,17 @@ public class AlumnoController {
 	@Autowired
 	AlumnoService alumnoService;
 	
-	@GetMapping({ "/index", "/", "/home", "/alumno" })
+	@GetMapping({ "/index","/home","/","/principal" })
+	public ModelAndView mostrarMenu(){
+		
+		ModelAndView modelView = new ModelAndView("principal");
+
+		
+		return modelView;
+	
+	}
+	
+	@GetMapping({ "/alumno" })
 	public ModelAndView cargarAlumno(){
 		
 		Alumno alu = new Alumno();
@@ -47,39 +57,83 @@ public class AlumnoController {
 		
 		//ListadoAlumnos.getListado().add(alumno);
 		
-		alumnoService.guardarAlumno(alumno);
+		//alumnoService.guardarAlumno(alumno);
 		//se guarda en la bd
+		
 		ModelAndView modelView = new ModelAndView("listadoAlumnos");
+		
+		if (alumnoService.existeDni(alumno.getDni())) {
+	    	
+	        modelView.setViewName("index"); // Nombre de la vista de carga de docentes
+	        
+	        modelView.addObject("errorDni", "El DNI ya está registrado");
+	    } else {
+	        alumnoService.guardarAlumno(alumno);
+	        
+	        modelView.setViewName("listadoAlumno"); // Nombre de la vista de listado de docentes
+	        
+	        modelView.addObject("listado", alumnoService.buscarTodosAlumnos());
+	        
+	    }
 		
 		//modelView.addObject("listado", ListadoAlumnos.getListado());
 		//buscar de la bd
-		modelView.addObject("listado", alumnoService.buscarTodosAlumnos());
+		//modelView.addObject("listado", alumnoService.buscarTodosAlumnos());
+		
 		return modelView;
 	}
 	
 	//metodo para eliminar un registro
 	
 	@GetMapping("/eliminarAlumno/{dni}")
-	public ModelAndView eliminarAlumno(@PathVariable Integer dni){
-		
-		for(int i=0;i <ListadoAlumnos.getListado().size();i++) {
-			if(ListadoAlumnos.getListado().get(i).getDni().equals(dni)) {
-				//ListadoAlumnos.getListado().get(i).setEstado(false);
-				ListadoAlumnos.getListado().remove(i);
-			}
-		}
+	public String eliminarAlumno(@PathVariable Integer dni) throws Exception{
 		
 		
-		
-		ModelAndView modelView = new ModelAndView("listadoAlumnos");
-		
-		modelView.addObject("listado", ListadoAlumnos.getListado());
-		
-		return modelView;
+		alumnoService.eliminarAlumno(dni);
 	
+		//for(int i=0;i <ListadoAlumnos.getListado().size();i++) {
+			//if(ListadoAlumnos.getListado().get(i).getDni().equals(dni)) {
+				////ListadoAlumnos.getListado().get(i).setEstado(false);
+				//ListadoAlumnos.getListado().remove(i);
+			//}
+		//}
+		//ModelAndView modelView = new ModelAndView("listadoAlumnos");
+		//modelView.addObject("listado", ListadoAlumnos.getListado());
+		
+		//return modelView;
+	
+		return "redirect:/mostrarListado";
+	}
+	@GetMapping("/mostrarListado")
+	public ModelAndView mostrarAlumnos() {
+		
+		ModelAndView listado = new ModelAndView("listadoAlumnos");
+		listado.addObject("listado", alumnoService.buscarTodosAlumnos());
+		
+		
+		return listado;
 	}
 	
 	//metodo para modificar un registro
+	@GetMapping("/modificarAlumno/{dni}")
+	public ModelAndView modificarAlumno(@PathVariable Integer dni) throws Exception{
+		
+		ModelAndView modificaAlumno = new ModelAndView("index");
+		modificaAlumno.addObject("alumno", alumnoService.encontrarUnAlumno(dni));
+		
+		
+		return modificaAlumno;
 	
+	}
 	
+	@PostMapping("/modificarALumno")
+	public ModelAndView modificarUnAlumno(@ModelAttribute ("alumno") Alumno alumno) {
+		alumnoService.guardarAlumno(alumno);
+		
+		ModelAndView modelView = new ModelAndView ("listadoAlumnos");
+		
+		modelView.addObject("listado", alumnoService.buscarTodosAlumnos());
+		
+		return modelView;
+	}
 }
