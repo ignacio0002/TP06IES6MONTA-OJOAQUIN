@@ -70,7 +70,7 @@ public class AlumnoController {
 	    } else {
 	        alumnoService.guardarAlumno(alumno);
 	        
-	        modelView.setViewName("listadoAlumno"); // Nombre de la vista de listado de docentes
+	        modelView.setViewName("listadoAlumnos"); // Nombre de la vista de listado de docentes
 	        
 	        modelView.addObject("listado", alumnoService.buscarTodosAlumnos());
 	        
