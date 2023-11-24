@@ -146,8 +146,6 @@ public class AlumnoController {
 	
 	}
 	
-	
-	
 	@PostMapping("/cargarAlumnoModificado")
 	public ModelAndView cargarAlumnoModificado(@ModelAttribute("alumno") Alumno alumno) {
 		
@@ -160,11 +158,7 @@ public class AlumnoController {
 		modelView.addObject("listado", alumnoService.buscarTodosAlumnos());
 		
 		return modelView;
-		
-		
-		
-		
-		
+			
 	
 	}
 	
