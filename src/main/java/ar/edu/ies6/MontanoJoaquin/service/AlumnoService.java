@@ -51,7 +51,9 @@ public class AlumnoService {
 	}
 	
 	public boolean existeDni(Integer dni) {
-	    return alumnoRepository.existsById(dni);
+		
+		return alumnoRepository.existsById(dni);
+		    
 	}
 	//Todos los Servicios
 }

@@ -30,6 +30,8 @@ public class AlumnoController {
 	@Autowired
 	AlumnoService alumnoService;
 	
+	
+	
 	@GetMapping({ "/index","/home","/","/principal" })
 	public ModelAndView mostrarMenu(){
 		
@@ -61,6 +63,8 @@ public class AlumnoController {
 		//se guarda en la bd
 		
 		ModelAndView modelView = new ModelAndView("listadoAlumnos");
+		
+		
 		
 		if (alumnoService.existeDni(alumno.getDni())) {
 	    	
@@ -118,7 +122,9 @@ public class AlumnoController {
 	@GetMapping("/modificarAlumno/{dni}")
 	public ModelAndView modificarAlumno(@PathVariable Integer dni) throws Exception{
 		
-		ModelAndView modificaAlumno = new ModelAndView("index");
+		 
+	   
+		ModelAndView modificaAlumno = new ModelAndView("modificarALumno");
 		modificaAlumno.addObject("alumno", alumnoService.encontrarUnAlumno(dni));
 		
 		
@@ -127,7 +133,8 @@ public class AlumnoController {
 	}
 	
 	@PostMapping("/modificarALumno")
-	public ModelAndView modificarUnAlumno(@ModelAttribute ("alumno") Alumno alumno) {
+	public ModelAndView modificarUnAlumno(@ModelAttribute ("alumno") Alumno alumno){
+		
 		alumnoService.guardarAlumno(alumno);
 		
 		ModelAndView modelView = new ModelAndView ("listadoAlumnos");
@@ -135,5 +142,32 @@ public class AlumnoController {
 		modelView.addObject("listado", alumnoService.buscarTodosAlumnos());
 		
 		return modelView;
+	
+	
 	}
+	
+	
+	
+	@PostMapping("/cargarAlumnoModificado")
+	public ModelAndView cargarAlumnoModificado(@ModelAttribute("alumno") Alumno alumno) {
+		
+		alumnoService.guardarAlumno(alumno);
+		
+		
+		ModelAndView modelView = new ModelAndView ("listadoAlumnos");
+		
+		
+		modelView.addObject("listado", alumnoService.buscarTodosAlumnos());
+		
+		return modelView;
+		
+		
+		
+		
+		
+	
+	}
+	
+	
+		
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import ar.edu.ies6.MontanoJoaquin.modelDocente.Docente;
 import ar.edu.ies6.MontanoJoaquin.serviceDocente.DocenteService;
 
@@ -87,7 +88,7 @@ public class DocenteController {
 	@GetMapping("/modificarDocente/{dni}")
 	public ModelAndView modificarDocente(@PathVariable Integer dni) throws Exception {
 		
-		ModelAndView modificaDocente = new ModelAndView ("cargaDocente");
+		ModelAndView modificaDocente = new ModelAndView ("modificarDocente");
 		
 		modificaDocente.addObject("docente", docenteService.encontrarUnDocente(dni));
 		
@@ -104,10 +105,25 @@ public class DocenteController {
 		modelView.addObject("listado", docenteService.buscarTodosDocentes());
 		
 		return modelView;
+    }
+		
+	
+	
+	
+	@PostMapping("/cargarDocenteModificado")
+	public ModelAndView cargarDocenteModificado(@ModelAttribute("docente") Docente docente) {
+		
+		docenteService.guardarDocente(docente);
 		
 		
+		ModelAndView modelView = new ModelAndView ("listadoDocentes");
+		
+		
+		modelView.addObject("listado", docenteService.buscarTodosDocentes());
+		
+		return modelView;
+			
+	
 	}
-	
-	
-	
+		
 }

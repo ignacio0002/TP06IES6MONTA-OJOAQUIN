@@ -42,6 +42,7 @@ public class Alumno {
 	@Column
 	private Boolean estado;
 	
+	
 	public Alumno(){
 		// TODO Auto-generated constructor stub
 	}
@@ -96,6 +97,9 @@ public class Alumno {
 		this.lastName = lastName;
 	}
 	
+	
+
+
 	public Integer getEdad() {
 		
 		int edad = 0;
